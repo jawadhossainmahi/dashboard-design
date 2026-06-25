@@ -1,0 +1,2923 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPulse — School Intelligence Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <style>
+        :root {
+            --bg: #f5f6fa;
+            --surface: #ffffff;
+            --surface2: #f0f2f8;
+            --border: rgba(0, 0, 0, 0.07);
+            --text: #0f1117;
+            --text2: #5a607a;
+            --text3: #9499b0;
+            --accent: #4f46e5;
+            --accent2: #7c3aed;
+            --green: #10b981;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --teal: #14b8a6;
+            --pink: #ec4899;
+            --shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.10);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --sidebar: 230px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0d0e14;
+            --surface: #16181f;
+            --surface2: #1e2029;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f0f1f6;
+            --text2: #9499b0;
+            --text3: #5a607a;
+            --shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            padding: 0
+        }
+
+        .sidebar-logo {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .logo-mark {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .logo-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.3px
+        }
+
+        .logo-text span {
+            color: var(--accent)
+        }
+
+        .sidebar-school {
+            padding: 12px 16px;
+            margin: 8px 12px;
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            font-size: 12px
+        }
+
+        .school-name {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 13px
+        }
+
+        .school-session {
+            color: var(--text3);
+            font-size: 11px;
+            margin-top: 1px
+        }
+
+        .sidebar-nav {
+            padding: 8px 12px;
+            flex: 1;
+            overflow-y: auto
+        }
+
+        .nav-section {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            padding: 10px 8px 4px
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--text2);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all .15s;
+            margin-bottom: 1px;
+            text-decoration: none
+        }
+
+        .nav-item:hover {
+            background: var(--surface2);
+            color: var(--text)
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(79, 70, 229, .12), rgba(124, 58, 237, .08));
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        .nav-item .nav-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 7px;
+            border-radius: 99px
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border)
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer
+        }
+
+        .user-pill:hover {
+            background: var(--surface2)
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text3)
+        }
+
+        /* Main */
+        .main {
+            margin-left: var(--sidebar);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh
+        }
+
+        /* Topbar */
+        .topbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 50
+        }
+
+        .topbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            flex: 1
+        }
+
+        .topbar-title span {
+            color: var(--text3);
+            font-weight: 400;
+            font-size: 13px;
+            margin-left: 8px
+        }
+
+        .topbar-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 12px;
+            color: var(--text2);
+            font-size: 13px;
+            cursor: pointer;
+            min-width: 200px
+        }
+
+        .topbar-search:hover {
+            border-color: var(--accent)
+        }
+
+        .topbar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text2);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            font-size: 17px;
+            position: relative;
+            flex-shrink: 0
+        }
+
+        .topbar-btn:hover {
+            background: var(--border);
+            color: var(--text)
+        }
+
+        .notif-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--red);
+            border-radius: 50%;
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            border: 2px solid var(--surface)
+        }
+
+        .session-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text2);
+            cursor: pointer
+        }
+
+        .session-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .theme-toggle {
+            cursor: pointer
+        }
+
+        /* Content */
+        .content {
+            padding: 24px 28px;
+            flex: 1
+        }
+
+        /* Section headers */
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            margin-top: 28px
+        }
+
+        .section-head:first-child {
+            margin-top: 0
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .07em
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 2px
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 5px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text2)
+        }
+
+        .chip:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .chip.active {
+            background: rgba(79, 70, 229, .1);
+            border-color: rgba(79, 70, 229, .3);
+            color: var(--accent)
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px
+        }
+
+        .kpi-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow .2s, transform .15s
+        }
+
+        .kpi-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px)
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: var(--radius) var(--radius) 0 0
+        }
+
+        .kpi-card.c-indigo::before {
+            background: linear-gradient(90deg, var(--accent), var(--accent2))
+        }
+
+        .kpi-card.c-green::before {
+            background: linear-gradient(90deg, var(--green), #34d399)
+        }
+
+        .kpi-card.c-amber::before {
+            background: linear-gradient(90deg, var(--amber), #fbbf24)
+        }
+
+        .kpi-card.c-blue::before {
+            background: linear-gradient(90deg, var(--blue), #60a5fa)
+        }
+
+        .kpi-card.c-teal::before {
+            background: linear-gradient(90deg, var(--teal), #2dd4bf)
+        }
+
+        .kpi-card.c-pink::before {
+            background: linear-gradient(90deg, var(--pink), #f472b6)
+        }
+
+        .kpi-card.c-red::before {
+            background: linear-gradient(90deg, var(--red), #f87171)
+        }
+
+        .kpi-card.c-violet::before {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa)
+        }
+
+        .kpi-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 12px
+        }
+
+        .kpi-icon.c-indigo {
+            background: rgba(79, 70, 229, .1);
+            color: var(--accent)
+        }
+
+        .kpi-icon.c-green {
+            background: rgba(16, 185, 129, .1);
+            color: var(--green)
+        }
+
+        .kpi-icon.c-amber {
+            background: rgba(245, 158, 11, .1);
+            color: var(--amber)
+        }
+
+        .kpi-icon.c-blue {
+            background: rgba(59, 130, 246, .1);
+            color: var(--blue)
+        }
+
+        .kpi-icon.c-teal {
+            background: rgba(20, 184, 166, .1);
+            color: var(--teal)
+        }
+
+        .kpi-icon.c-pink {
+            background: rgba(236, 72, 153, .1);
+            color: var(--pink)
+        }
+
+        .kpi-icon.c-red {
+            background: rgba(239, 68, 68, .1);
+            color: var(--red)
+        }
+
+        .kpi-icon.c-violet {
+            background: rgba(139, 92, 246, .1);
+            color: #8b5cf6
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .06em
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -1px;
+            margin: 2px 0 8px
+        }
+
+        .kpi-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600
+        }
+
+        .kpi-trend.up {
+            color: var(--green)
+        }
+
+        .kpi-trend.down {
+            color: var(--red)
+        }
+
+        .sparkline {
+            height: 32px
+        }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px
+        }
+
+        .grid-7-5 {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px
+        }
+
+        .grid-5-7 {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 16px
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow)
+        }
+
+        .card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        .card-sub {
+            font-size: 12px;
+            color: var(--text3);
+            margin-top: 2px
+        }
+
+        .card-tag {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px;
+            background: var(--surface2);
+            color: var(--text3)
+        }
+
+        .chart-wrap {
+            position: relative;
+            width: 100%
+        }
+
+        /* Attendance cards */
+        .att-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px
+        }
+
+        .att-card {
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            border: 1px solid var(--border)
+        }
+
+        .att-pct {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px
+        }
+
+        .att-label {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 500;
+            margin-top: 1px
+        }
+
+        .att-count {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px
+        }
+
+        .att-cmp {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 1px
+        }
+
+        .pct-green {
+            color: var(--green)
+        }
+
+        .pct-red {
+            color: var(--red)
+        }
+
+        .pct-amber {
+            color: var(--amber)
+        }
+
+        /* Finance cards */
+        .fin-stat {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px
+        }
+
+        .fin-card {
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            border: 1px solid var(--border)
+        }
+
+        .fin-label {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 500;
+            margin-bottom: 6px
+        }
+
+        .fin-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.5px
+        }
+
+        .fin-today {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 3px
+        }
+
+        .fin-today span {
+            font-weight: 600;
+            color: var(--green)
+        }
+
+        /* Account cards */
+        .acc-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+
+        .acc-card {
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .acc-card.cash {
+            background: linear-gradient(135deg, rgba(16, 185, 129, .12), rgba(52, 211, 153, .06));
+            border: 1px solid rgba(16, 185, 129, .2)
+        }
+
+        .acc-card.bank {
+            background: linear-gradient(135deg, rgba(59, 130, 246, .12), rgba(96, 165, 250, .06));
+            border: 1px solid rgba(59, 130, 246, .2)
+        }
+
+        .acc-card.mobile {
+            background: linear-gradient(135deg, rgba(245, 158, 11, .12), rgba(251, 191, 36, .06));
+            border: 1px solid rgba(245, 158, 11, .2)
+        }
+
+        .acc-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2)
+        }
+
+        .acc-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin: 6px 0 4px;
+            letter-spacing: -0.5px
+        }
+
+        .acc-change {
+            font-size: 11px;
+            font-weight: 600
+        }
+
+        .acc-change.up {
+            color: var(--green)
+        }
+
+        .acc-change.down {
+            color: var(--red)
+        }
+
+        .acc-icon {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            font-size: 22px;
+            opacity: .3
+        }
+
+        /* Transaction table */
+        .tx-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        .tx-table th {
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .tx-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text)
+        }
+
+        .tx-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .tx-table tr:hover td {
+            background: var(--surface2)
+        }
+
+        .tx-id {
+            color: var(--text3);
+            font-family: monospace;
+            font-size: 12px
+        }
+
+        .tx-type {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px
+        }
+
+        .tx-fee {
+            background: rgba(16, 185, 129, .1);
+            color: var(--green)
+        }
+
+        .tx-sal {
+            background: rgba(59, 130, 246, .1);
+            color: var(--blue)
+        }
+
+        .tx-exp {
+            background: rgba(239, 68, 68, .1);
+            color: var(--red)
+        }
+
+        .tx-status {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 5px
+        }
+
+        .status-done {
+            background: rgba(16, 185, 129, .1);
+            color: var(--green)
+        }
+
+        .status-pend {
+            background: rgba(245, 158, 11, .1);
+            color: var(--amber)
+        }
+
+        .tx-btn {
+            font-size: 11px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            cursor: pointer;
+            background: var(--surface);
+            color: var(--text2)
+        }
+
+        .tx-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+            flex-wrap: wrap
+        }
+
+        .filter-select {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            font-size: 12px;
+            color: var(--text2);
+            cursor: pointer;
+            outline: none
+        }
+
+        .filter-select:focus {
+            border-color: var(--accent)
+        }
+
+        /* Exam section */
+        .exam-chips {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px
+        }
+
+        .exam-chip {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            text-align: center
+        }
+
+        .exam-chip-val {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        .exam-chip-label {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 2px
+        }
+
+        /* Student lists */
+        .student-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .student-table th {
+            text-align: left;
+            padding: 8px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .student-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px
+        }
+
+        .student-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .student-table tr:hover td {
+            background: var(--surface2)
+        }
+
+        .s-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: #fff
+        }
+
+        .s-name {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .trend-up {
+            color: var(--green);
+            font-weight: 700
+        }
+
+        .trend-dn {
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .trend-eq {
+            color: var(--text3);
+            font-weight: 700
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #9ca3af, #d1d5db);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .rank-n {
+            background: var(--surface2);
+            color: var(--text3);
+            font-size: 10px;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        /* AI Insights */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            background: var(--surface2);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border)
+        }
+
+        .insight-ico {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px
+        }
+
+        .insight-text {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.5
+        }
+
+        .insight-text strong {
+            color: var(--text);
+            font-weight: 600
+        }
+
+        .insight-text .sub {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 2px
+        }
+
+        .insight-item.warn {
+            border-color: rgba(245, 158, 11, .25);
+            background: rgba(245, 158, 11, .05)
+        }
+
+        .insight-item.danger {
+            border-color: rgba(239, 68, 68, .2);
+            background: rgba(239, 68, 68, .04)
+        }
+
+        .insight-item.success {
+            border-color: rgba(16, 185, 129, .2);
+            background: rgba(16, 185, 129, .04)
+        }
+
+        .insight-item.info {
+            border-color: rgba(59, 130, 246, .2);
+            background: rgba(59, 130, 246, .04)
+        }
+
+        /* Health score */
+        .health-wrap {
+            display: flex;
+            align-items: center;
+            gap: 20px
+        }
+
+        .health-score-big {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--green), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .health-label {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 500
+        }
+
+        .health-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, .12);
+            color: var(--green);
+            margin-top: 4px
+        }
+
+        .health-factors {
+            flex: 1
+        }
+
+        .hf-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px
+        }
+
+        .hf-name {
+            font-size: 12px;
+            color: var(--text2);
+            width: 130px;
+            flex-shrink: 0
+        }
+
+        .hf-bar {
+            flex: 1;
+            height: 6px;
+            background: var(--surface2);
+            border-radius: 3px;
+            overflow: hidden
+        }
+
+        .hf-fill {
+            height: 100%;
+            border-radius: 3px
+        }
+
+        .hf-val {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            width: 30px;
+            text-align: right;
+            flex-shrink: 0
+        }
+
+        /* Ops cards */
+        .ops-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px
+        }
+
+        .ops-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .15s
+        }
+
+        .ops-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg)
+        }
+
+        .ops-count {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin: 8px 0 4px
+        }
+
+        .ops-label {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 500
+        }
+
+        .ops-icon {
+            font-size: 22px
+        }
+
+        /* Library */
+        .lib-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px
+        }
+
+        .lib-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px
+        }
+
+        .lib-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        .lib-label {
+            font-size: 11px;
+            color: var(--text3);
+            margin-top: 2px
+        }
+
+        /* Bar inline */
+        .subj-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px
+        }
+
+        .subj-name {
+            font-size: 12px;
+            color: var(--text2);
+            width: 100px;
+            flex-shrink: 0
+        }
+
+        .subj-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: var(--surface2);
+            border-radius: 4px;
+            overflow: hidden
+        }
+
+        .subj-fill {
+            height: 100%;
+            border-radius: 4px
+        }
+
+        .subj-pct {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            width: 36px;
+            text-align: right;
+            flex-shrink: 0
+        }
+
+        /* Dept submission */
+        .dept-row {
+            margin-bottom: 12px
+        }
+
+        .dept-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between
+        }
+
+        .dept-bar-bg {
+            height: 7px;
+            background: var(--surface2);
+            border-radius: 4px;
+            overflow: hidden
+        }
+
+        .dept-fill {
+            height: 100%;
+            border-radius: 4px
+        }
+
+        .dept-stats {
+            display: flex;
+            gap: 14px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--text3)
+        }
+
+        /* Tab */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px
+        }
+
+        .tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text3);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            font-weight: 600
+        }
+
+        .tab:hover {
+            color: var(--text)
+        }
+
+        /* Grade dist inline */
+        .grade-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 7px
+        }
+
+        .grade-label {
+            font-size: 12px;
+            font-weight: 600;
+            width: 24px;
+            color: var(--text2)
+        }
+
+        .grade-bar {
+            flex: 1;
+            height: 10px;
+            background: var(--surface2);
+            border-radius: 4px;
+            overflow: hidden
+        }
+
+        .grade-fill {
+            height: 100%;
+            border-radius: 4px
+        }
+
+        .grade-count {
+            font-size: 11px;
+            color: var(--text3);
+            width: 36px;
+            text-align: right
+        }
+
+        /* Publication ring */
+        .ring-wrap {
+            display: flex;
+            align-items: center;
+            gap: 16px
+        }
+
+        .ring-stats {
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.8
+        }
+
+        .ring-stats strong {
+            color: var(--text);
+            font-weight: 700
+        }
+
+        /* Scroll */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 28px 0 0
+        }
+
+        /* View more */
+        .view-more {
+            font-size: 12px;
+            color: var(--accent);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 10px;
+            font-weight: 500
+        }
+
+        .view-more:hover {
+            text-decoration: underline
+        }
+
+        /* Badge */
+        .badge {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: var(--surface2);
+            color: var(--text3)
+        }
+
+        .badge.premium {
+            background: linear-gradient(135deg, rgba(245, 158, 11, .15), rgba(251, 191, 36, .1));
+            color: #b45309;
+            border: 1px solid rgba(245, 158, 11, .2)
+        }
+
+        /* AI panel */
+        .ai-panel {
+            background: linear-gradient(135deg, rgba(79, 70, 229, .06), rgba(124, 58, 237, .04));
+            border: 1px solid rgba(79, 70, 229, .15);
+            border-radius: var(--radius);
+            padding: 20px
+        }
+
+        .ai-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px
+        }
+
+        .ai-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            letter-spacing: .04em
+        }
+
+        .ai-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        /* Progress ring SVG */
+        .prog-ring {
+            display: block
+        }
+
+        /* Responsive */
+        @media(max-width:1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(4, 1fr)
+            }
+
+            .ops-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        @media(max-width:960px) {
+            :root {
+                --sidebar: 0px
+            }
+
+            .sidebar {
+                display: none
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .grid-7-5,
+            .grid-5-7,
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        /* Skeleton loading animation */
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0
+            }
+
+            100% {
+                background-position: -200% 0
+            }
+        }
+
+        /* Sticky section */
+        .sticky-head {
+            position: sticky;
+            top: 60px;
+            z-index: 10;
+            background: var(--bg);
+            padding: 8px 0 0
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-mark">
+                <div class="logo-icon">E</div>
+                <div class="logo-text">Edu<span>Pulse</span></div>
+            </div>
+        </div>
+        <div class="sidebar-school">
+            <div class="school-name">🏫 Dhaka Model School</div>
+            <div class="school-session">Session: 2024–2025</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a class="nav-item active" href="#"><span class="nav-icon">📊</span> Dashboard</a>
+            <a class="nav-item" href="#"><span class="nav-icon">📈</span> Analytics</a>
+            <div class="nav-section">Management</div>
+            <a class="nav-item" href="#"><span class="nav-icon">🎓</span> Students <span
+                    class="nav-badge">1,240</span></a>
+            <a class="nav-item" href="#"><span class="nav-icon">👨‍🏫</span> Teachers</a>
+            <a class="nav-item" href="#"><span class="nav-icon">👥</span> Employees</a>
+            <a class="nav-item" href="#"><span class="nav-icon">🏛️</span> Classes</a>
+            <div class="nav-section">Academic</div>
+            <a class="nav-item" href="#"><span class="nav-icon">📝</span> Examinations</a>
+            <a class="nav-item" href="#"><span class="nav-icon">📋</span> Results</a>
+            <a class="nav-item" href="#"><span class="nav-icon">📅</span> Attendance</a>
+            <a class="nav-item" href="#"><span class="nav-icon">📚</span> Library</a>
+            <div class="nav-section">Finance</div>
+            <a class="nav-item" href="#"><span class="nav-icon">💰</span> Accounts</a>
+            <a class="nav-item" href="#"><span class="nav-icon">🧾</span> Invoices <span class="nav-badge">3</span></a>
+            <a class="nav-item" href="#"><span class="nav-icon">📤</span> Expenses</a>
+            <div class="nav-section">System</div>
+            <a class="nav-item" href="#"><span class="nav-icon">🌐</span> Website</a>
+            <a class="nav-item" href="#"><span class="nav-icon">⚙️</span> Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-pill">
+                <div class="user-avatar">SA</div>
+                <div>
+                    <div class="user-name">School Admin</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div class="topbar-title">Dashboard <span>/ Overview</span></div>
+            <div class="topbar-search">🔍 &nbsp;Search anything... <span
+                    style="margin-left:auto;font-size:11px;color:var(--text3)">⌘K</span></div>
+            <div class="session-chip">📅 2024–2025 ▾</div>
+            <div class="session-chip">Jun 1 – Jun 25, 2025 ▾</div>
+            <div class="topbar-btn"><span>🔔</span><span class="notif-dot"></span></div>
+            <div class="topbar-btn">⚡</div>
+            <div class="topbar-btn theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">🌙</div>
+            <div class="user-avatar" style="width:34px;height:34px;cursor:pointer;flex-shrink:0">SA</div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <!-- ─── SECTION 1: KPI ─── -->
+            <div class="section-head">
+                <div>
+                    <div class="section-label">Executive Overview</div>
+                    <div class="section-title">Key Performance Indicators</div>
+                </div>
+                <div class="section-actions">
+                    <div class="chip active">Today</div>
+                    <div class="chip">This Week</div>
+                    <div class="chip">This Month</div>
+                </div>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card c-indigo">
+                    <div class="kpi-icon c-indigo">🎓</div>
+                    <div class="kpi-label">Total Students</div>
+                    <div class="kpi-value">1,240</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +3.2%</div>
+                        <canvas class="sparkline" id="sp1" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-green">
+                    <div class="kpi-icon c-green">👨‍🏫</div>
+                    <div class="kpi-label">Total Teachers</div>
+                    <div class="kpi-value">68</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +2.0%</div>
+                        <canvas class="sparkline" id="sp2" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-amber">
+                    <div class="kpi-icon c-amber">👥</div>
+                    <div class="kpi-label">Total Employees</div>
+                    <div class="kpi-value">42</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +1.0%</div>
+                        <canvas class="sparkline" id="sp3" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-blue">
+                    <div class="kpi-icon c-blue">🏫</div>
+                    <div class="kpi-label">Active Classes</div>
+                    <div class="kpi-value">18</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +0</div>
+                        <canvas class="sparkline" id="sp4" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-teal">
+                    <div class="kpi-icon c-teal">📐</div>
+                    <div class="kpi-label">Active Sections</div>
+                    <div class="kpi-value">54</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +2</div>
+                        <canvas class="sparkline" id="sp5" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-pink">
+                    <div class="kpi-icon c-pink">💻</div>
+                    <div class="kpi-label">Active Users</div>
+                    <div class="kpi-value">312</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +8.4%</div>
+                        <canvas class="sparkline" id="sp6" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-violet">
+                    <div class="kpi-icon c-violet">✅</div>
+                    <div class="kpi-label">Today's Attendance</div>
+                    <div class="kpi-value">91.4%</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend down">▼ −1.2%</div>
+                        <canvas class="sparkline" id="sp7" width="80" height="32"></canvas>
+                    </div>
+                </div>
+                <div class="kpi-card c-red">
+                    <div class="kpi-icon c-red">💵</div>
+                    <div class="kpi-label">Today's Collection</div>
+                    <div class="kpi-value">৳1.24L</div>
+                    <div class="kpi-bottom">
+                        <div class="kpi-trend up">▲ +12.3%</div>
+                        <canvas class="sparkline" id="sp8" width="80" height="32"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 2: Student Analytics ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Student Intelligence</div>
+                    <div class="section-title">Student Analytics</div>
+                </div>
+                <div class="section-actions">
+                    <div class="chip">Export ↓</div>
+                    <select class="filter-select">
+                        <option>Session 2024–25</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid-7-5">
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Student distribution by class</div>
+                            <div class="card-sub">Current academic session</div>
+                        </div>
+                        <div class="card-tag">Bar</div>
+                    </div>
+                    <div class="chart-wrap" style="height:220px"><canvas id="classDistChart" role="img"
+                            aria-label="Student distribution per class"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Admission trend</div>
+                            <div class="card-sub">Monthly new admissions</div>
+                        </div>
+                        <div class="card-tag">Line</div>
+                    </div>
+                    <div class="chart-wrap" style="height:220px"><canvas id="admissionTrend" role="img"
+                            aria-label="Monthly admission trend"></canvas></div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 3: HR Analytics ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Human Resources</div>
+                    <div class="section-title">Staff Analytics</div>
+                </div>
+            </div>
+            <div class="grid-2" style="margin-bottom:14px">
+                <div class="att-card"
+                    style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;padding:16px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)">
+                    <div class="fin-card" style="background:var(--surface2)">
+                        <div class="fin-label">Total Teachers</div>
+                        <div class="fin-value">68</div>
+                        <div class="fin-today">+2 this session</div>
+                    </div>
+                    <div class="fin-card" style="background:var(--surface2)">
+                        <div class="fin-label">Total Employees</div>
+                        <div class="fin-value">42</div>
+                        <div class="fin-today">+1 this month</div>
+                    </div>
+                    <div class="fin-card" style="background:var(--surface2)">
+                        <div class="fin-label">New This Month</div>
+                        <div class="fin-value" style="color:var(--green)">3</div>
+                        <div class="fin-today">Onboarding active</div>
+                    </div>
+                    <div class="fin-card" style="background:var(--surface2)">
+                        <div class="fin-label">Pending Promotions</div>
+                        <div class="fin-value" style="color:var(--amber)">5</div>
+                        <div class="fin-today">Awaiting approval</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Staff by department</div>
+                        <div class="card-tag">Grouped</div>
+                    </div>
+                    <div class="chart-wrap" style="height:140px"><canvas id="staffDeptChart" role="img"
+                            aria-label="Staff distribution by department"></canvas></div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 4: Student Attendance ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Attendance Intelligence</div>
+                    <div class="section-title">Student Attendance</div>
+                </div>
+                <div class="section-actions">
+                    <select class="filter-select">
+                        <option>Today</option>
+                        <option>This Week</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Classes</option>
+                        <option>Class 8</option>
+                        <option>Class 9</option>
+                    </select>
+                </div>
+            </div>
+            <div class="att-grid">
+                <div class="att-card" style="border-left:3px solid var(--green)">
+                    <div class="att-pct pct-green">91.4%</div>
+                    <div class="att-label">Present</div>
+                    <div class="att-count">1,133 students</div>
+                    <div class="att-cmp">▲ +0.8% vs yesterday</div>
+                </div>
+                <div class="att-card" style="border-left:3px solid var(--red)">
+                    <div class="att-pct pct-red">6.1%</div>
+                    <div class="att-label">Absent</div>
+                    <div class="att-count">76 students</div>
+                    <div class="att-cmp" style="color:var(--red)">▲ +1.2% vs yesterday</div>
+                </div>
+                <div class="att-card" style="border-left:3px solid var(--amber)">
+                    <div class="att-pct pct-amber">2.5%</div>
+                    <div class="att-label">Late</div>
+                    <div class="att-count">31 students</div>
+                    <div class="att-cmp">▼ −0.3% vs yesterday</div>
+                </div>
+            </div>
+            <div class="grid-7-5">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Attendance trend (last 30 days)</div>
+                        <div class="card-tag">Multi-line</div>
+                    </div>
+                    <div class="chart-wrap" style="height:200px"><canvas id="attTrend" role="img"
+                            aria-label="Student attendance trend"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Class-wise comparison</div>
+                        <div class="card-tag">Grouped</div>
+                    </div>
+                    <div class="chart-wrap" style="height:200px"><canvas id="classAttChart" role="img"
+                            aria-label="Class-wise attendance"></canvas></div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 5: Staff Attendance ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">HR Attendance</div>
+                    <div class="section-title">Teacher & Employee Attendance</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab(this,'teacher')">Teachers</div>
+                    <div class="tab" onclick="switchTab(this,'employee')">Employees</div>
+                </div>
+                <div class="att-grid" style="margin-bottom:14px">
+                    <div class="att-card" style="border-left:3px solid var(--green)">
+                        <div class="att-pct pct-green">94.1%</div>
+                        <div class="att-label">Present</div>
+                        <div class="att-count">64 teachers</div>
+                    </div>
+                    <div class="att-card" style="border-left:3px solid var(--red)">
+                        <div class="att-pct pct-red">4.4%</div>
+                        <div class="att-label">Absent</div>
+                        <div class="att-count">3 teachers</div>
+                    </div>
+                    <div class="att-card" style="border-left:3px solid var(--amber)">
+                        <div class="att-pct pct-amber">1.5%</div>
+                        <div class="att-label">Late</div>
+                        <div class="att-count">1 teacher</div>
+                    </div>
+                </div>
+                <div class="chart-wrap" style="height:160px"><canvas id="staffAttTrend" role="img"
+                        aria-label="Staff attendance trend"></canvas></div>
+            </div>
+
+            <!-- ─── SECTION 6: Finance ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Financial Command Center</div>
+                    <div class="section-title">Revenue & Expense Intelligence</div>
+                </div>
+                <div class="section-actions">
+                    <div class="chip">Export</div>
+                    <select class="filter-select">
+                        <option>2024–2025</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fin-stat">
+                <div class="fin-card"
+                    style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);border-left:3px solid var(--green)">
+                    <div class="fin-label">Fee invoices</div>
+                    <div class="fin-value">৳18.4L</div>
+                    <div class="fin-today">Today: <span>৳1.24L</span></div>
+                </div>
+                <div class="fin-card"
+                    style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);border-left:3px solid var(--blue)">
+                    <div class="fin-label">Salary invoices</div>
+                    <div class="fin-value">৳8.2L</div>
+                    <div class="fin-today">Today: <span style="color:var(--blue)">৳0</span></div>
+                </div>
+                <div class="fin-card"
+                    style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);border-left:3px solid var(--red)">
+                    <div class="fin-label">Expenses</div>
+                    <div class="fin-value">৳3.6L</div>
+                    <div class="fin-today">Today: <span style="color:var(--red)">৳12,400</span></div>
+                </div>
+            </div>
+            <div class="acc-grid" style="margin-bottom:16px">
+                <div class="acc-card cash">
+                    <div class="acc-icon">💵</div>
+                    <div class="acc-name">Cash account</div>
+                    <div class="acc-val">৳4,24,850</div>
+                    <div class="acc-change up">▲ +6.2% this month</div>
+                </div>
+                <div class="acc-card bank">
+                    <div class="acc-icon">🏦</div>
+                    <div class="acc-name">Bank account</div>
+                    <div class="acc-val">৳12,80,400</div>
+                    <div class="acc-change up">▲ +3.8% this month</div>
+                </div>
+                <div class="acc-card mobile">
+                    <div class="acc-icon">📱</div>
+                    <div class="acc-name">Mobile banking</div>
+                    <div class="acc-val">৳1,62,300</div>
+                    <div class="acc-change down">▼ −1.1% this month</div>
+                </div>
+            </div>
+            <div class="grid-7-5">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Monthly financial performance</div>
+                        <div class="card-tag">Multi-line</div>
+                    </div>
+                    <div class="chart-wrap" style="height:220px"><canvas id="finChart" role="img"
+                            aria-label="Monthly financial performance"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Distribution by category</div>
+                        <div class="card-tag">Donut</div>
+                    </div>
+                    <div class="chart-wrap" style="height:220px"><canvas id="finDonut" role="img"
+                            aria-label="Financial category distribution"></canvas></div>
+                    <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
+                        <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
+                                style="width:10px;height:10px;border-radius:2px;background:var(--green)"></span>Fees
+                            61%</span>
+                        <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
+                                style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></span>Salary
+                            27%</span>
+                        <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
+                                style="width:10px;height:10px;border-radius:2px;background:var(--red)"></span>Expenses
+                            12%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 7: Transactions ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Transaction Monitoring</div>
+                    <div class="section-title">Recent Transactions</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="filters-row">
+                    <input type="date" class="filter-select" value="2025-06-25">
+                    <select class="filter-select">
+                        <option>All Types</option>
+                        <option>Fee</option>
+                        <option>Salary</option>
+                        <option>Expense</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Users</option>
+                    </select>
+                    <input type="text" class="filter-select" placeholder="Search TxID..." style="min-width:160px">
+                </div>
+                <div style="overflow-x:auto">
+                    <table class="tx-table">
+                        <thead>
+                            <tr>
+                                <th>Tx ID</th>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tx-id">#TX-2841</td>
+                                <td>Jun 25, 2025</td>
+                                <td>Fatima Khanam</td>
+                                <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td style="font-weight:600;color:var(--green)">৳4,800</td>
+                                <td><span class="tx-status status-done">Completed</span></td>
+                                <td><button class="tx-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TX-2840</td>
+                                <td>Jun 25, 2025</td>
+                                <td>Rahman Mia</td>
+                                <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td style="font-weight:600;color:var(--green)">৳6,200</td>
+                                <td><span class="tx-status status-done">Completed</span></td>
+                                <td><button class="tx-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TX-2839</td>
+                                <td>Jun 25, 2025</td>
+                                <td>Office</td>
+                                <td><span class="tx-type tx-exp">Expense</span></td>
+                                <td style="font-weight:600;color:var(--red)">−৳1,400</td>
+                                <td><span class="tx-status status-done">Completed</span></td>
+                                <td><button class="tx-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TX-2838</td>
+                                <td>Jun 24, 2025</td>
+                                <td>Sumaiya Begum</td>
+                                <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td style="font-weight:600;color:var(--green)">৳3,600</td>
+                                <td><span class="tx-status status-done">Completed</span></td>
+                                <td><button class="tx-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TX-2837</td>
+                                <td>Jun 24, 2025</td>
+                                <td>Accounts</td>
+                                <td><span class="tx-type tx-sal">Salary</span></td>
+                                <td style="font-weight:600;color:var(--blue)">৳28,000</td>
+                                <td><span class="tx-status status-pend">Pending</span></td>
+                                <td><button class="tx-btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="tx-id">#TX-2836</td>
+                                <td>Jun 23, 2025</td>
+                                <td>Karim Uddin</td>
+                                <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td style="font-weight:600;color:var(--green)">৳5,100</td>
+                                <td><span class="tx-status status-done">Completed</span></td>
+                                <td><button class="tx-btn">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a class="view-more">→ View all transactions</a>
+            </div>
+
+            <!-- ─── SECTION 8: Exam & Academic Intelligence ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Academic Intelligence</div>
+                    <div class="section-title">Examination & Performance Analytics</div>
+                </div>
+                <div class="section-actions">
+                    <select class="filter-select">
+                        <option>Final Exam 2025</option>
+                        <option>Mid Term 2025</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Classes</option>
+                        <option>Class 8</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Exam chips -->
+            <div class="exam-chips">
+                <div class="exam-chip">
+                    <div class="exam-chip-val" style="color:var(--amber)">3</div>
+                    <div class="exam-chip-label">Upcoming Exams</div>
+                </div>
+                <div class="exam-chip">
+                    <div class="exam-chip-val" style="color:var(--blue)">2</div>
+                    <div class="exam-chip-label">Ongoing Exams</div>
+                </div>
+                <div class="exam-chip">
+                    <div class="exam-chip-val" style="color:var(--green)">6</div>
+                    <div class="exam-chip-label">Completed Exams</div>
+                </div>
+                <div class="exam-chip">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:12px">
+                        <svg width="52" height="52" class="prog-ring" role="img" aria-label="82% results published">
+                            <circle cx="26" cy="26" r="21" fill="none" stroke="var(--surface2)" stroke-width="6" />
+                            <circle cx="26" cy="26" r="21" fill="none" stroke="var(--accent)" stroke-width="6"
+                                stroke-dasharray="131.9" stroke-dashoffset="23.7" stroke-linecap="round"
+                                transform="rotate(-90 26 26)" />
+                            <text x="26" y="30" text-anchor="middle" font-size="11" font-weight="700"
+                                fill="var(--accent)">82%</text>
+                        </svg>
+                        <div style="text-align:left">
+                            <div style="font-size:12px;font-weight:600;color:var(--text)">82% published</div>
+                            <div style="font-size:11px;color:var(--text3)">18% pending</div>
+                        </div>
+                    </div>
+                    <div class="exam-chip-label" style="margin-top:4px">Result Publication</div>
+                </div>
+            </div>
+
+            <!-- Academic Health + Class Performance -->
+            <div class="grid-5-7" style="margin-bottom:16px">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Academic health score</div>
+                    </div>
+                    <div class="health-wrap">
+                        <div>
+                            <div class="health-score-big">87</div>
+                            <div class="health-label">out of 100</div>
+                            <div class="health-status">✅ Excellent</div>
+                        </div>
+                        <div class="health-factors" style="padding-left:8px">
+                            <div class="hf-row">
+                                <div class="hf-name">Pass rate</div>
+                                <div class="hf-bar">
+                                    <div class="hf-fill" style="width:94%;background:var(--green)"></div>
+                                </div>
+                                <div class="hf-val">94%</div>
+                            </div>
+                            <div class="hf-row">
+                                <div class="hf-name">Avg GPA</div>
+                                <div class="hf-bar">
+                                    <div class="hf-fill" style="width:82%;background:var(--accent)"></div>
+                                </div>
+                                <div class="hf-val">4.08</div>
+                            </div>
+                            <div class="hf-row">
+                                <div class="hf-name">Grade dist.</div>
+                                <div class="hf-bar">
+                                    <div class="hf-fill" style="width:79%;background:var(--teal)"></div>
+                                </div>
+                                <div class="hf-val">79%</div>
+                            </div>
+                            <div class="hf-row">
+                                <div class="hf-name">Publication</div>
+                                <div class="hf-bar">
+                                    <div class="hf-fill" style="width:82%;background:var(--blue)"></div>
+                                </div>
+                                <div class="hf-val">82%</div>
+                            </div>
+                            <div class="hf-row">
+                                <div class="hf-name">Improvement</div>
+                                <div class="hf-bar">
+                                    <div class="hf-fill" style="width:72%;background:var(--amber)"></div>
+                                </div>
+                                <div class="hf-val">72%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Class-wise average GPA</div>
+                        </div>
+                        <div class="card-tag">Bar</div>
+                    </div>
+                    <div class="chart-wrap" style="height:190px"><canvas id="gpaChart" role="img"
+                            aria-label="Class-wise average GPA"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Subject perf + Grade dist -->
+            <div class="grid-2" style="margin-bottom:16px">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Subject performance</div>
+                        <div class="card-tag">Pass rate</div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <div class="subj-row"><span class="subj-name">Mathematics</span>
+                            <div class="subj-bar-bg">
+                                <div class="subj-fill" style="width:82%;background:#3b82f6"></div>
+                            </div><span class="subj-pct">82%</span>
+                        </div>
+                        <div class="subj-row"><span class="subj-name">Science</span>
+                            <div class="subj-bar-bg">
+                                <div class="subj-fill" style="width:91%;background:var(--green)"></div>
+                            </div><span class="subj-pct">91%</span>
+                        </div>
+                        <div class="subj-row"><span class="subj-name">English</span>
+                            <div class="subj-bar-bg">
+                                <div class="subj-fill" style="width:76%;background:var(--amber)"></div>
+                            </div><span class="subj-pct">76%</span>
+                        </div>
+                        <div class="subj-row"><span class="subj-name">Bangla</span>
+                            <div class="subj-bar-bg">
+                                <div class="subj-fill" style="width:94%;background:var(--teal)"></div>
+                            </div><span class="subj-pct">94%</span>
+                        </div>
+                        <div class="subj-row"><span class="subj-name">ICT</span>
+                            <div class="subj-bar-bg">
+                                <div class="subj-fill" style="width:87%;background:var(--accent)"></div>
+                            </div><span class="subj-pct">87%</span>
+                        </div>
+                        <div class="subj-row" style="margin-bottom:0"><span class="subj-name">Social studies</span>
+                            <div class="subj-bar-bg">
+                                <div class="subj-fill" style="width:79%;background:#8b5cf6"></div>
+                            </div><span class="subj-pct">79%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Grade distribution — Class 8</div>
+                    </div>
+                    <div class="grade-row"><span class="grade-label" style="color:var(--green)">A+</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:22%;background:var(--green)"></div>
+                        </div><span class="grade-count">22 students</span>
+                    </div>
+                    <div class="grade-row"><span class="grade-label" style="color:var(--teal)">A</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:31%;background:var(--teal)"></div>
+                        </div><span class="grade-count">31</span>
+                    </div>
+                    <div class="grade-row"><span class="grade-label" style="color:var(--blue)">A−</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:18%;background:var(--blue)"></div>
+                        </div><span class="grade-count">18</span>
+                    </div>
+                    <div class="grade-row"><span class="grade-label" style="color:var(--accent)">B</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:14%;background:var(--accent)"></div>
+                        </div><span class="grade-count">14</span>
+                    </div>
+                    <div class="grade-row"><span class="grade-label" style="color:var(--amber)">C</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:9%;background:var(--amber)"></div>
+                        </div><span class="grade-count">9</span>
+                    </div>
+                    <div class="grade-row"><span class="grade-label" style="color:var(--red)">D</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:4%;background:var(--red)"></div>
+                        </div><span class="grade-count">4</span>
+                    </div>
+                    <div class="grade-row" style="margin-bottom:0"><span class="grade-label"
+                            style="color:#991b1b">F</span>
+                        <div class="grade-bar">
+                            <div class="grade-fill" style="width:2%;background:#991b1b"></div>
+                        </div><span class="grade-count">2</span>
+                    </div>
+                    <div style="margin-top:14px">
+                        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px">Overall school
+                            distribution</div>
+                        <div class="chart-wrap" style="height:100px"><canvas id="gradeDonut" role="img"
+                                aria-label="Overall grade distribution">A+18% A26% A-22% B17% C10% D5% F2%</canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam compare + Dept submission -->
+            <div class="grid-2" style="margin-bottom:16px">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Current vs previous exam</div>
+                        <div class="card-tag">Comparison</div>
+                    </div>
+                    <div class="chart-wrap" style="height:180px"><canvas id="examCompare" role="img"
+                            aria-label="Current vs previous exam comparison"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Teacher result submission</div>
+                        <div class="card-tag">By dept.</div>
+                    </div>
+                    <div class="dept-row">
+                        <div class="dept-name"><span>Mathematics</span><span style="color:var(--amber)">Pending:
+                                2</span></div>
+                        <div class="dept-bar-bg">
+                            <div class="dept-fill" style="width:83%;background:var(--blue)"></div>
+                        </div>
+                        <div class="dept-stats"><span>Assigned: 12</span><span>Submitted: 10</span></div>
+                    </div>
+                    <div class="dept-row">
+                        <div class="dept-name"><span>Science</span><span style="color:var(--green)">Complete</span>
+                        </div>
+                        <div class="dept-bar-bg">
+                            <div class="dept-fill" style="width:100%;background:var(--green)"></div>
+                        </div>
+                        <div class="dept-stats"><span>Assigned: 9</span><span>Submitted: 9</span></div>
+                    </div>
+                    <div class="dept-row">
+                        <div class="dept-name"><span>English</span><span style="color:var(--red)">Pending: 3</span>
+                        </div>
+                        <div class="dept-bar-bg">
+                            <div class="dept-fill" style="width:63%;background:var(--red)"></div>
+                        </div>
+                        <div class="dept-stats"><span>Assigned: 8</span><span>Submitted: 5</span></div>
+                    </div>
+                    <div class="dept-row" style="margin-bottom:0">
+                        <div class="dept-name"><span>Bangla</span><span style="color:var(--green)">Complete</span></div>
+                        <div class="dept-bar-bg">
+                            <div class="dept-fill" style="width:100%;background:var(--green)"></div>
+                        </div>
+                        <div class="dept-stats"><span>Assigned: 10</span><span>Submitted: 10</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top + At-risk students -->
+            <div class="grid-2" style="margin-bottom:16px">
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Top performing students</div>
+                        <div class="card-tag">Top 5</div>
+                    </div>
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Student</th>
+                                <th>Class</th>
+                                <th>GPA</th>
+                                <th>Prev</th>
+                                <th>↑↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="rank-1">1</div>
+                                </td>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--green)">NS</div>Nusrat Sultana
+                                    </div>
+                                </td>
+                                <td>Class 10</td>
+                                <td style="font-weight:700">5.00</td>
+                                <td style="color:var(--text3)">4.90</td>
+                                <td class="trend-up">↑</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="rank-2">2</div>
+                                </td>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--blue)">SR</div>Sadia Rahman
+                                    </div>
+                                </td>
+                                <td>Class 9</td>
+                                <td style="font-weight:700">5.00</td>
+                                <td style="color:var(--text3)">5.00</td>
+                                <td class="trend-eq">→</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="rank-3">3</div>
+                                </td>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--amber)">MK</div>Mahir Khan
+                                    </div>
+                                </td>
+                                <td>Class 8</td>
+                                <td style="font-weight:700">4.95</td>
+                                <td style="color:var(--text3)">4.80</td>
+                                <td class="trend-up">↑</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="rank-n">4</div>
+                                </td>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--teal)">TH</div>Tasfia Haque
+                                    </div>
+                                </td>
+                                <td>Class 10</td>
+                                <td style="font-weight:700">4.90</td>
+                                <td style="color:var(--text3)">4.90</td>
+                                <td class="trend-eq">→</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="rank-n">5</div>
+                                </td>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--pink)">RI</div>Rafiul Islam
+                                    </div>
+                                </td>
+                                <td>Class 7</td>
+                                <td style="font-weight:700">4.88</td>
+                                <td style="color:var(--text3)">4.72</td>
+                                <td class="trend-up">↑</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="view-more">→ View full rankings</a>
+                </div>
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">At-risk students <span class="badge premium">⭐ Premium</span></div>
+                    </div>
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Class</th>
+                                <th>Grade</th>
+                                <th>Prev</th>
+                                <th>↑↓</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--amber)">AH</div>Ahmed Hossain
+                                    </div>
+                                </td>
+                                <td>Class 8</td>
+                                <td style="font-weight:700;color:var(--red)">C</td>
+                                <td style="color:var(--text3)">B</td>
+                                <td class="trend-dn">↓</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--amber)">RM</div>Rahim Mia
+                                    </div>
+                                </td>
+                                <td>Class 9</td>
+                                <td style="font-weight:700;color:var(--red)">D</td>
+                                <td style="color:var(--text3)">C</td>
+                                <td class="trend-dn">↓</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--amber)">SB</div>Sumaiya Begum
+                                    </div>
+                                </td>
+                                <td>Class 6</td>
+                                <td style="font-weight:700;color:var(--amber)">C</td>
+                                <td style="color:var(--text3)">B</td>
+                                <td class="trend-dn">↓</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--red)">JA</div>Jahid Ahmed
+                                    </div>
+                                </td>
+                                <td>Class 7</td>
+                                <td style="font-weight:700;color:var(--red)">D</td>
+                                <td style="color:var(--text3)">C</td>
+                                <td class="trend-dn">↓</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="s-name">
+                                        <div class="s-avatar" style="background:var(--red)">NK</div>Nadia Khatun
+                                    </div>
+                                </td>
+                                <td>Class 8</td>
+                                <td style="font-weight:700;color:var(--amber)">C</td>
+                                <td style="color:var(--text3)">B+</td>
+                                <td class="trend-dn">↓</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a class="view-more">→ View all at-risk students</a>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 9: Library ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Library</div>
+                    <div class="section-title">Library Analytics</div>
+                </div>
+            </div>
+            <div class="lib-grid">
+                <div class="lib-card">
+                    <div class="lib-val">8,420</div>
+                    <div class="lib-label">📚 Total books</div>
+                </div>
+                <div class="lib-card">
+                    <div class="lib-val" style="color:var(--blue)">312</div>
+                    <div class="lib-label">📖 Issued books</div>
+                </div>
+                <div class="lib-card">
+                    <div class="lib-val" style="color:var(--red)">48</div>
+                    <div class="lib-label">⚠ Overdue books</div>
+                </div>
+                <div class="lib-card">
+                    <div class="lib-val" style="color:var(--green)">640</div>
+                    <div class="lib-label">👥 Active members</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-title">Book issue & return trend</div>
+                    <div class="card-tag">Line</div>
+                </div>
+                <div class="chart-wrap" style="height:160px"><canvas id="libChart" role="img"
+                        aria-label="Library book issue and return trend"></canvas></div>
+            </div>
+
+            <!-- ─── SECTION 10: Website ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Website & CMS</div>
+                    <div class="section-title">Frontend Analytics</div>
+                </div>
+            </div>
+            <div class="grid-3" style="margin-bottom:16px">
+                <div class="fin-card"
+                    style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)">
+                    <div class="fin-label">Total visitors</div>
+                    <div class="fin-value">14,820</div>
+                    <div class="fin-today">Today: <span>342</span></div>
+                </div>
+                <div class="fin-card"
+                    style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)">
+                    <div class="fin-label">Page views</div>
+                    <div class="fin-value">48,200</div>
+                    <div class="fin-today">↑ +8.2% this week</div>
+                </div>
+                <div class="fin-card"
+                    style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)">
+                    <div class="fin-label">Published notices</div>
+                    <div class="fin-value">84</div>
+                    <div class="fin-today">3 this month</div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 11: Operations ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">Operations Center</div>
+                    <div class="section-title">Pending Actions</div>
+                </div>
+            </div>
+            <div class="ops-grid">
+                <div class="ops-card" style="border-top:3px solid var(--amber)">
+                    <div class="ops-icon">📋</div>
+                    <div class="ops-count" style="color:var(--amber)">14</div>
+                    <div class="ops-label">Pending admissions</div>
+                </div>
+                <div class="ops-card" style="border-top:3px solid var(--blue)">
+                    <div class="ops-icon">🏖️</div>
+                    <div class="ops-count" style="color:var(--blue)">7</div>
+                    <div class="ops-label">Leave requests</div>
+                </div>
+                <div class="ops-card" style="border-top:3px solid var(--red)">
+                    <div class="ops-icon">💸</div>
+                    <div class="ops-count" style="color:var(--red)">3</div>
+                    <div class="ops-label">Fee approvals</div>
+                </div>
+                <div class="ops-card" style="border-top:3px solid var(--teal)">
+                    <div class="ops-icon">📝</div>
+                    <div class="ops-count" style="color:var(--teal)">9</div>
+                    <div class="ops-label">Exam tasks</div>
+                </div>
+                <div class="ops-card" style="border-top:3px solid var(--accent)">
+                    <div class="ops-icon">📊</div>
+                    <div class="ops-count" style="color:var(--accent)">5</div>
+                    <div class="ops-label">Result publications</div>
+                </div>
+            </div>
+
+            <!-- ─── SECTION 12: AI Insights ─── -->
+            <hr class="divider">
+            <div class="section-head" style="margin-top:28px">
+                <div>
+                    <div class="section-label">AI Intelligence</div>
+                    <div class="section-title">Smart Insights & Recommendations</div>
+                </div>
+                <div class="ai-badge">AI Powered</div>
+            </div>
+            <div class="ai-panel">
+                <div class="insights-grid">
+                    <div class="insight-item success">
+                        <div class="insight-ico">📈</div>
+                        <div>
+                            <div class="insight-text"><strong>Admission up 14%</strong> — New admissions increased by
+                                14% this month compared to the same period last year.</div>
+                            <div class="insight-text sub">Driven by Class 6 & 7 intake</div>
+                        </div>
+                    </div>
+                    <div class="insight-item warn">
+                        <div class="insight-ico">⚠️</div>
+                        <div>
+                            <div class="insight-text"><strong>Class 8 attendance dropped 5%</strong> — Attendance fell
+                                below the 90% threshold this week. Consider a parent notice.</div>
+                            <div class="insight-text sub">Threshold: 90% · Current: 85.2%</div>
+                        </div>
+                    </div>
+                    <div class="insight-item danger">
+                        <div class="insight-ico">💰</div>
+                        <div>
+                            <div class="insight-text"><strong>Fee collection 18% below target</strong> — Monthly target
+                                is ৳22L. Current collection: ৳18.4L with 6 days remaining.</div>
+                            <div class="insight-text sub">৳3.6L outstanding</div>
+                        </div>
+                    </div>
+                    <div class="insight-item success">
+                        <div class="insight-ico">🏆</div>
+                        <div>
+                            <div class="insight-text"><strong>Science dept. achieved highest GPA</strong> — Department
+                                average GPA is 4.42, highest across all departments.</div>
+                            <div class="insight-text sub">Pass rate: 96% — Excellent</div>
+                        </div>
+                    </div>
+                    <div class="insight-item danger">
+                        <div class="insight-ico">📉</div>
+                        <div>
+                            <div class="insight-text"><strong>Mathematics has the highest failure rate</strong> — 14
+                                students (8.3%) failed in the latest exam. Targeted support recommended.</div>
+                            <div class="insight-text sub">Worst-performing subject this term</div>
+                        </div>
+                    </div>
+                    <div class="insight-item warn">
+                        <div class="insight-ico">🎯</div>
+                        <div>
+                            <div class="insight-text"><strong>12 students need academic intervention</strong> —
+                                Identified a significant grade drop compared to the previous exam cycle.</div>
+                            <div class="insight-text sub">Classes 6–10 · Trending downward</div>
+                        </div>
+                    </div>
+                    <div class="insight-item info">
+                        <div class="insight-ico">📚</div>
+                        <div>
+                            <div class="insight-text"><strong>Library utilization up 22%</strong> — Book issues
+                                increased significantly this month — highest in the last 6 months.</div>
+                            <div class="insight-text sub">312 books currently issued</div>
+                        </div>
+                    </div>
+                    <div class="insight-item info">
+                        <div class="insight-ico">🎓</div>
+                        <div>
+                            <div class="insight-text"><strong>18 students improved GPA by &gt;0.5</strong> — Notable
+                                academic improvement cohort this semester — celebrate and share.</div>
+                            <div class="insight-text sub">Recommend acknowledgment ceremony</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height:40px"></div>
+        </div><!-- /content -->
+    </main>
+
+    <script>
+        /* ── helpers ── */
+        const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+        const tv = (l, d) => isDark() ? d : l;
+
+        function toggleTheme() {
+            const h = document.documentElement;
+            h.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+            renderCharts();
+        }
+
+        function switchTab(el, tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        /* ── sparklines ── */
+        function makeSparkline(id, data, color) {
+            const c = document.getElementById(id);
+            if (!c) return;
+            new Chart(c, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, i) => i),
+                    datasets: [{ data, borderColor: color, borderWidth: 2, tension: .4, pointRadius: 0, fill: true, backgroundColor: color + '22' }]
+                },
+                options: { responsive: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } }, animation: { duration: 600 } }
+            });
+        }
+
+        /* ── Chart instances for re-render ── */
+        let charts = {};
+
+        function destroyAll() {
+            Object.values(charts).forEach(c => { try { c.destroy() } catch (e) { } });
+            charts = {};
+        }
+
+        function renderCharts() {
+            destroyAll();
+            const grid = { color: tv('rgba(0,0,0,0.05)', 'rgba(255,255,255,0.05)') };
+            const tickStyle = { color: tv('#9499b0', '#5a607a'), font: { size: 11 } };
+            const bg1 = tv('#f0f2f8', '#1e2029');
+
+            /* Sparklines */
+            const spColors = ['#4f46e5', '#10b981', '#f59e0b', '#3b82f6', '#14b8a6', '#ec4899', '#8b5cf6', '#ef4444'];
+            const spData = [
+                [40, 42, 38, 45, 48, 50, 47, 52, 55, 58],
+                [60, 62, 61, 64, 65, 66, 65, 67, 68, 68],
+                [38, 39, 40, 40, 41, 41, 42, 42, 42, 42],
+                [18, 18, 18, 18, 18, 18, 18, 18, 18, 18],
+                [52, 52, 53, 53, 54, 54, 54, 54, 54, 54],
+                [280, 290, 295, 300, 305, 308, 310, 312, 311, 312],
+                [92, 91, 93, 90, 91, 92, 91, 92, 90, 91.4],
+                [100, 110, 105, 120, 115, 125, 118, 130, 124, 124],
+            ];
+            for (let i = 1; i <= 8; i++) makeSparkline('sp' + i, spData[i - 1], spColors[i - 1]);
+
+            /* Class distribution */
+            charts.classDist = new Chart(document.getElementById('classDistChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12'],
+                    datasets: [{ label: 'Students', data: [148, 152, 144, 138, 142, 122, 118], backgroundColor: '#4f46e5', borderRadius: 5, barThickness: 22 }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => v.raw + ' students' } } },
+                    scales: { x: { grid, ticks: tickStyle }, y: { grid: { display: false }, ticks: tickStyle } }
+                }
+            });
+
+            /* Admission trend */
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            charts.admission = new Chart(document.getElementById('admissionTrend'), {
+                type: 'line',
+                data: {
+                    labels: months, datasets: [
+                        { label: 'New admissions', data: [22, 18, 30, 25, 28, 35, 40, 38, 20, 15, 12, 10], borderColor: '#4f46e5', tension: .4, pointRadius: 3, borderWidth: 2.5, fill: true, backgroundColor: 'rgba(79,70,229,.08)' },
+                        { label: 'Dropouts', data: [2, 3, 1, 4, 2, 1, 3, 2, 1, 2, 1, 0], borderColor: '#ef4444', tension: .4, pointRadius: 3, borderWidth: 2, fill: false, borderDash: [4, 3] }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { grid, ticks: tickStyle }, y: { grid, ticks: tickStyle } }
+                }
+            });
+
+            /* Staff dept */
+            charts.staffDept = new Chart(document.getElementById('staffDeptChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Science', 'Math', 'English', 'Social', 'Arts'], datasets: [
+                        { label: 'Teachers', data: [12, 10, 8, 7, 6], backgroundColor: '#4f46e5', borderRadius: 4, barThickness: 14 },
+                        { label: 'Staff', data: [3, 2, 2, 1, 1], backgroundColor: '#10b981', borderRadius: 4, barThickness: 14 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle } }
+                }
+            });
+
+            /* Attendance trend */
+            const days30 = Array.from({ length: 30 }, (_, i) => `Jun ${i + 1}`).slice(-30);
+            charts.att = new Chart(document.getElementById('attTrend'), {
+                type: 'line',
+                data: {
+                    labels: days30, datasets: [
+                        { label: 'Present', data: [91, 92, 90, 93, 91, 89, 92, 93, 91, 90, 91, 92, 93, 91, 90, 89, 91, 92, 90, 91, 92, 91, 90, 93, 91, 90, 91, 92, 91, 91.4], borderColor: '#10b981', tension: .4, pointRadius: 0, borderWidth: 2.5, fill: true, backgroundColor: 'rgba(16,185,129,.07)' },
+                        { label: 'Absent', data: [7, 6, 8, 5, 7, 9, 6, 5, 7, 8, 7, 6, 5, 7, 8, 9, 7, 6, 8, 7, 6, 7, 8, 5, 7, 8, 7, 6, 7, 6.1], borderColor: '#ef4444', tension: .4, pointRadius: 0, borderWidth: 2 },
+                        { label: 'Late', data: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2.5], borderColor: '#f59e0b', tension: .4, pointRadius: 0, borderWidth: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false }, ticks: { ...tickStyle, maxTicksLimit: 6 } }, y: { grid, ticks: tickStyle, min: 0, max: 100 } }
+                }
+            });
+
+            /* Class attendance */
+            charts.classAtt = new Chart(document.getElementById('classAttChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Cl 6', 'Cl 7', 'Cl 8', 'Cl 9', 'Cl 10'], datasets: [
+                        { label: 'Present', data: [93, 91, 85, 92, 94], backgroundColor: '#10b981', borderRadius: 4, barThickness: 12 },
+                        { label: 'Absent', data: [5, 7, 12, 6, 4], backgroundColor: '#ef4444', borderRadius: 4, barThickness: 12 },
+                        { label: 'Late', data: [2, 2, 3, 2, 2], backgroundColor: '#f59e0b', borderRadius: 4, barThickness: 12 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle, max: 100 } }
+                }
+            });
+
+            /* Staff attendance trend */
+            charts.staffAtt = new Chart(document.getElementById('staffAttTrend'), {
+                type: 'line',
+                data: {
+                    labels: days30.slice(-14), datasets: [
+                        { label: 'Present', data: [96, 95, 94, 96, 95, 94, 95, 96, 94, 95, 96, 94, 95, 94.1], borderColor: '#10b981', tension: .4, pointRadius: 3, borderWidth: 2.5, fill: true, backgroundColor: 'rgba(16,185,129,.07)' },
+                        { label: 'Absent', data: [3, 4, 5, 3, 4, 5, 4, 3, 5, 4, 3, 5, 4, 4.4], borderColor: '#ef4444', tension: .4, pointRadius: 3, borderWidth: 2 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle, min: 85, max: 100 } }
+                }
+            });
+
+            /* Finance chart */
+            charts.fin = new Chart(document.getElementById('finChart'), {
+                type: 'line',
+                data: {
+                    labels: months, datasets: [
+                        { label: 'Fee invoices', data: [14, 16, 18, 15, 17, 18.4, 0, 0, 0, 0, 0, 0], borderColor: '#10b981', tension: .4, borderWidth: 2.5, pointRadius: 4, fill: true, backgroundColor: 'rgba(16,185,129,.07)', spanGaps: false },
+                        { label: 'Salary', data: [6.8, 6.8, 7.2, 7.2, 7.6, 8.2, 0, 0, 0, 0, 0, 0], borderColor: '#3b82f6', tension: .4, borderWidth: 2, pointRadius: 4, borderDash: [5, 3] },
+                        { label: 'Expenses', data: [2.8, 3.1, 3.0, 3.4, 3.2, 3.6, 0, 0, 0, 0, 0, 0], borderColor: '#ef4444', tension: .4, borderWidth: 2, pointRadius: 4, borderDash: [3, 3] }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => '৳' + v.raw + 'L' } } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: { ...tickStyle, callback: v => '৳' + v + 'L' } } }
+                }
+            });
+
+            /* Finance donut */
+            charts.finDonut = new Chart(document.getElementById('finDonut'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Fee invoices', 'Salary', 'Expenses'],
+                    datasets: [{ data: [61, 27, 12], backgroundColor: ['#10b981', '#3b82f6', '#ef4444'], borderWidth: 2, borderColor: tv('#ffffff', '#16181f') }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '65%',
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => v.label + ': ' + v.raw + '%' } } }
+                }
+            });
+
+            /* GPA chart */
+            charts.gpa = new Chart(document.getElementById('gpaChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Cl 6', 'Cl 7', 'Cl 8', 'Cl 9', 'Cl 10', 'Cl 11', 'Cl 12'],
+                    datasets: [{
+                        label: 'Avg GPA', data: [4.10, 3.92, 4.22, 4.05, 3.88, 4.18, 3.95],
+                        backgroundColor: ['#4f46e5', '#4f46e5', '#10b981', '#4f46e5', '#ef4444', '#4f46e5', '#4f46e5'], borderRadius: 5, barThickness: 24
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => 'GPA: ' + v.raw } } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle, min: 3.5, max: 5 } }
+                }
+            });
+
+            /* Grade donut */
+            charts.gradeDonut = new Chart(document.getElementById('gradeDonut'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['A+', 'A', 'A−', 'B', 'C', 'D', 'F'],
+                    datasets: [{
+                        data: [18, 26, 22, 17, 10, 5, 2],
+                        backgroundColor: ['#10b981', '#14b8a6', '#3b82f6', '#4f46e5', '#f59e0b', '#ef4444', '#991b1b'],
+                        borderWidth: 1, borderColor: tv('#ffffff', '#16181f')
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '68%',
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            /* Exam compare */
+            charts.examComp = new Chart(document.getElementById('examCompare'), {
+                type: 'bar',
+                data: {
+                    labels: ['Cl 6', 'Cl 7', 'Cl 8', 'Cl 9', 'Cl 10'], datasets: [
+                        { label: 'Current', data: [81, 79, 82, 80, 77], backgroundColor: '#4f46e5', borderRadius: 4, barThickness: 16 },
+                        { label: 'Previous', data: [77, 76, 76, 78, 74], backgroundColor: tv('#d1d5db', '#374151'), borderRadius: 4, barThickness: 16 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => v.dataset.label + ': ' + v.raw + '%' } } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle, min: 65 } }
+                }
+            });
+
+            /* Library chart */
+            charts.lib = new Chart(document.getElementById('libChart'), {
+                type: 'line',
+                data: {
+                    labels: days30.slice(-14), datasets: [
+                        { label: 'Issues', data: [22, 18, 24, 20, 26, 30, 28, 32, 29, 31, 27, 33, 30, 28], borderColor: '#3b82f6', tension: .4, borderWidth: 2.5, pointRadius: 3, fill: true, backgroundColor: 'rgba(59,130,246,.07)' },
+                        { label: 'Returns', data: [18, 20, 19, 22, 23, 24, 25, 26, 22, 28, 24, 30, 27, 25], borderColor: '#10b981', tension: .4, borderWidth: 2, pointRadius: 3 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle } }
+                }
+            });
+        }
+        /* Init */
+        document.addEventListener('DOMContentLoaded', renderCharts);
+    </script>
+</body>
+
+</html>
