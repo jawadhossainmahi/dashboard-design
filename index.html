@@ -629,6 +629,83 @@
             width: 100%
         }
 
+        /* ── View toggle (Card / Chart tabs) ── */
+        .view-tabs {
+            display: inline-flex;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            padding: 2px;
+            gap: 2px
+        }
+
+        .view-tab {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 11px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: var(--text3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            user-select: none
+        }
+
+        .view-tab.active {
+            background: var(--surface);
+            color: var(--accent);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .08)
+        }
+
+        .view-pane {
+            display: none
+        }
+
+        .view-pane.active {
+            display: block
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px
+        }
+
+        .mini-table th {
+            text-align: left;
+            padding: 7px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .mini-table td {
+            padding: 8px 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text)
+        }
+
+        .mini-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .mini-table tr:hover td {
+            background: var(--surface2)
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            display: inline-block;
+            margin-right: 6px;
+            flex-shrink: 0
+        }
+
         /* Attendance cards */
         .att-grid {
             display: grid;
@@ -783,6 +860,31 @@
             top: 14px;
             font-size: 22px;
             opacity: .3
+        }
+
+        .acc-dc-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border);
+            font-size: 11px
+        }
+
+        .acc-dc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1px
+        }
+
+        .acc-dc-item .lbl {
+            color: var(--text3);
+            font-weight: 500
+        }
+
+        .acc-dc-item .val {
+            font-weight: 700;
+            font-size: 13px
         }
 
         /* Transaction table */
@@ -1048,66 +1150,6 @@
             flex-shrink: 0
         }
 
-        /* AI Insights */
-        .insights-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px
-        }
-
-        .insight-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 14px;
-            background: var(--surface2);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border)
-        }
-
-        .insight-ico {
-            font-size: 20px;
-            flex-shrink: 0;
-            margin-top: 1px
-        }
-
-        .insight-text {
-            font-size: 13px;
-            color: var(--text);
-            line-height: 1.5
-        }
-
-        .insight-text strong {
-            color: var(--text);
-            font-weight: 600
-        }
-
-        .insight-text .sub {
-            font-size: 11px;
-            color: var(--text3);
-            margin-top: 2px
-        }
-
-        .insight-item.warn {
-            border-color: rgba(245, 158, 11, .25);
-            background: rgba(245, 158, 11, .05)
-        }
-
-        .insight-item.danger {
-            border-color: rgba(239, 68, 68, .2);
-            background: rgba(239, 68, 68, .04)
-        }
-
-        .insight-item.success {
-            border-color: rgba(16, 185, 129, .2);
-            background: rgba(16, 185, 129, .04)
-        }
-
-        .insight-item.info {
-            border-color: rgba(59, 130, 246, .2);
-            background: rgba(59, 130, 246, .04)
-        }
-
         /* Health score */
         .health-wrap {
             display: flex;
@@ -1220,33 +1262,6 @@
 
         .ops-icon {
             font-size: 22px
-        }
-
-        /* Library */
-        .lib-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px
-        }
-
-        .lib-card {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 14px
-        }
-
-        .lib-val {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text)
-        }
-
-        .lib-label {
-            font-size: 11px;
-            color: var(--text3);
-            margin-top: 2px
         }
 
         /* Bar inline */
@@ -1383,24 +1398,6 @@
             text-align: right
         }
 
-        /* Publication ring */
-        .ring-wrap {
-            display: flex;
-            align-items: center;
-            gap: 16px
-        }
-
-        .ring-stats {
-            font-size: 13px;
-            color: var(--text2);
-            line-height: 1.8
-        }
-
-        .ring-stats strong {
-            color: var(--text);
-            font-weight: 700
-        }
-
         /* Scroll */
         ::-webkit-scrollbar {
             width: 5px;
@@ -1455,37 +1452,6 @@
             border: 1px solid rgba(245, 158, 11, .2)
         }
 
-        /* AI panel */
-        .ai-panel {
-            background: linear-gradient(135deg, rgba(79, 70, 229, .06), rgba(124, 58, 237, .04));
-            border: 1px solid rgba(79, 70, 229, .15);
-            border-radius: var(--radius);
-            padding: 20px
-        }
-
-        .ai-head {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px
-        }
-
-        .ai-badge {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 9px;
-            border-radius: 5px;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            color: #fff;
-            letter-spacing: .04em
-        }
-
-        .ai-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text)
-        }
-
         /* Progress ring SVG */
         .prog-ring {
             display: block
@@ -1520,23 +1486,6 @@
             .grid-2,
             .grid-3 {
                 grid-template-columns: 1fr
-            }
-        }
-
-        /* Skeleton loading animation */
-        .skeleton {
-            background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: 200% 0
-            }
-
-            100% {
-                background-position: -200% 0
             }
         }
 
@@ -1720,18 +1669,75 @@
                 </div>
             </div>
             <div class="grid-7-5">
+                <!-- Student distribution by class : card/chart toggle -->
                 <div class="card">
                     <div class="card-head">
                         <div>
                             <div class="card-title">Student distribution by class</div>
                             <div class="card-sub">Current academic session</div>
                         </div>
-                        <div class="card-tag">Bar</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'classDist','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'classDist','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:220px"><canvas id="classDistChart" role="img"
-                            aria-label="Student distribution per class"></canvas></div>
+                    <div class="view-pane active" data-pane="classDist-chart">
+                        <div class="chart-wrap" style="height:220px"><canvas id="classDistChart" role="img"
+                                aria-label="Student distribution per class"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="classDist-card">
+                        <table class="mini-table">
+                            <thead>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Students</th>
+                                    <th>Share</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Class 6</td><td>148</td><td>11.9%</td></tr>
+                                <tr><td>Class 7</td><td>152</td><td>12.3%</td></tr>
+                                <tr><td>Class 8</td><td>144</td><td>11.6%</td></tr>
+                                <tr><td>Class 9</td><td>138</td><td>11.1%</td></tr>
+                                <tr><td>Class 10</td><td>142</td><td>11.5%</td></tr>
+                                <tr><td>Class 11</td><td>122</td><td>9.8%</td></tr>
+                                <tr><td>Class 12</td><td>118</td><td>9.5%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                
+
+                <!-- Gender distribution : card/chart toggle -->
+                <div class="card">
+                    <div class="card-head">
+                        <div>
+                            <div class="card-title">Student gender distribution</div>
+                            <div class="card-sub">All classes combined</div>
+                        </div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'studGender','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'studGender','card')">📋 Card</div>
+                        </div>
+                    </div>
+                    <div class="view-pane active" data-pane="studGender-chart">
+                        <div class="chart-wrap" style="height:200px"><canvas id="studentGenderChart" role="img"
+                                aria-label="Student gender distribution"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="studGender-card">
+                        <div class="grid-2" style="gap:10px">
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">♂ Male students</div>
+                                <div class="fin-value" style="color:var(--blue)">652</div>
+                                <div class="fin-today">52.6% of total</div>
+                            </div>
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">♀ Female students</div>
+                                <div class="fin-value" style="color:var(--pink)">588</div>
+                                <div class="fin-today">47.4% of total</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- ─── SECTION 3: HR Analytics ─── -->
@@ -1766,13 +1772,97 @@
                         <div class="fin-today">Awaiting approval</div>
                     </div>
                 </div>
+
+                <!-- Staff gender distribution -->
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Staff gender distribution</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'staffGender','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'staffGender','card')">📋 Card</div>
+                        </div>
+                    </div>
+                    <div class="view-pane active" data-pane="staffGender-chart">
+                        <div class="chart-wrap" style="height:140px"><canvas id="staffGenderChart" role="img"
+                                aria-label="Staff gender distribution"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="staffGender-card">
+                        <div class="grid-2" style="gap:10px">
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">♂ Male staff</div>
+                                <div class="fin-value" style="color:var(--blue)">61</div>
+                                <div class="fin-today">55.5% of total</div>
+                            </div>
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">♀ Female staff</div>
+                                <div class="fin-value" style="color:var(--pink)">49</div>
+                                <div class="fin-today">44.5% of total</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-bottom:16px">
+                <!-- Staff by department -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Staff by department</div>
-                        <div class="card-tag">Grouped</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'staffDept','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'staffDept','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:140px"><canvas id="staffDeptChart" role="img"
-                            aria-label="Staff distribution by department"></canvas></div>
+                    <div class="view-pane active" data-pane="staffDept-chart">
+                        <div class="chart-wrap" style="height:200px"><canvas id="staffDeptChart" role="img"
+                                aria-label="Staff distribution by department"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="staffDept-card">
+                        <table class="mini-table">
+                            <thead>
+                                <tr><th>Department</th><th>Teachers</th><th>Staff</th><th>Total</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Science</td><td>12</td><td>3</td><td>15</td></tr>
+                                <tr><td>Math</td><td>10</td><td>2</td><td>12</td></tr>
+                                <tr><td>English</td><td>8</td><td>2</td><td>10</td></tr>
+                                <tr><td>Social</td><td>7</td><td>1</td><td>8</td></tr>
+                                <tr><td>Arts</td><td>6</td><td>1</td><td>7</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Staff by designation : NEW -->
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-title">Staff by designation</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'staffDesig','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'staffDesig','card')">📋 Card</div>
+                        </div>
+                    </div>
+                    <div class="view-pane active" data-pane="staffDesig-chart">
+                        <div class="chart-wrap" style="height:200px"><canvas id="staffDesigChart" role="img"
+                                aria-label="Staff distribution by designation"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="staffDesig-card">
+                        <table class="mini-table">
+                            <thead>
+                                <tr><th>Designation</th><th>Count</th><th>Share</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Principal / Vice-Principal</td><td>2</td><td>1.8%</td></tr>
+                                <tr><td>Senior Teacher</td><td>24</td><td>21.8%</td></tr>
+                                <tr><td>Assistant Teacher</td><td>32</td><td>29.1%</td></tr>
+                                <tr><td>Lab Assistant</td><td>8</td><td>7.3%</td></tr>
+                                <tr><td>Librarian</td><td>2</td><td>1.8%</td></tr>
+                                <tr><td>Accountant</td><td>3</td><td>2.7%</td></tr>
+                                <tr><td>Admin / Office Staff</td><td>14</td><td>12.7%</td></tr>
+                                <tr><td>Support Staff</td><td>25</td><td>22.7%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1819,18 +1909,56 @@
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Attendance trend (last 30 days)</div>
-                        <div class="card-tag">Multi-line</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'attTrend','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'attTrend','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:200px"><canvas id="attTrend" role="img"
-                            aria-label="Student attendance trend"></canvas></div>
+                    <div class="view-pane active" data-pane="attTrend-chart">
+                        <div class="chart-wrap" style="height:200px"><canvas id="attTrend" role="img"
+                                aria-label="Student attendance trend"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="attTrend-card">
+                        <div class="grid-3" style="gap:10px">
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">30-day avg present</div>
+                                <div class="fin-value" style="color:var(--green)">91.1%</div>
+                            </div>
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">30-day avg absent</div>
+                                <div class="fin-value" style="color:var(--red)">6.8%</div>
+                            </div>
+                            <div class="fin-card" style="background:var(--surface2)">
+                                <div class="fin-label">30-day avg late</div>
+                                <div class="fin-value" style="color:var(--amber)">2.1%</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Class-wise comparison</div>
-                        <div class="card-tag">Grouped</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'classAtt','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'classAtt','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:200px"><canvas id="classAttChart" role="img"
-                            aria-label="Class-wise attendance"></canvas></div>
+                    <div class="view-pane active" data-pane="classAtt-chart">
+                        <div class="chart-wrap" style="height:200px"><canvas id="classAttChart" role="img"
+                                aria-label="Class-wise attendance"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="classAtt-card">
+                        <table class="mini-table">
+                            <thead><tr><th>Class</th><th>Present</th><th>Absent</th><th>Late</th></tr></thead>
+                            <tbody>
+                                <tr><td>Class 6</td><td>93%</td><td>5%</td><td>2%</td></tr>
+                                <tr><td>Class 7</td><td>91%</td><td>7%</td><td>2%</td></tr>
+                                <tr><td>Class 8</td><td>85%</td><td>12%</td><td>3%</td></tr>
+                                <tr><td>Class 9</td><td>92%</td><td>6%</td><td>2%</td></tr>
+                                <tr><td>Class 10</td><td>94%</td><td>4%</td><td>2%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -1864,8 +1992,29 @@
                         <div class="att-count">1 teacher</div>
                     </div>
                 </div>
-                <div class="chart-wrap" style="height:160px"><canvas id="staffAttTrend" role="img"
-                        aria-label="Staff attendance trend"></canvas></div>
+                <div class="card-head" style="margin-bottom:8px">
+                    <div class="card-sub">14-day trend</div>
+                    <div class="view-tabs">
+                        <div class="view-tab active" onclick="setView(this,'staffAtt','chart')">📊 Chart</div>
+                        <div class="view-tab" onclick="setView(this,'staffAtt','card')">📋 Card</div>
+                    </div>
+                </div>
+                <div class="view-pane active" data-pane="staffAtt-chart">
+                    <div class="chart-wrap" style="height:160px"><canvas id="staffAttTrend" role="img"
+                            aria-label="Staff attendance trend"></canvas></div>
+                </div>
+                <div class="view-pane" data-pane="staffAtt-card">
+                    <div class="grid-2" style="gap:10px">
+                        <div class="fin-card" style="background:var(--surface2)">
+                            <div class="fin-label">14-day avg present</div>
+                            <div class="fin-value" style="color:var(--green)">94.9%</div>
+                        </div>
+                        <div class="fin-card" style="background:var(--surface2)">
+                            <div class="fin-label">14-day avg absent</div>
+                            <div class="fin-value" style="color:var(--red)">4.1%</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- ─── SECTION 6: Finance ─── -->
@@ -1902,52 +2051,154 @@
                     <div class="fin-today">Today: <span style="color:var(--red)">৳12,400</span></div>
                 </div>
             </div>
+
+            <!-- Account cards with Debit / Credit breakdown -->
             <div class="acc-grid" style="margin-bottom:16px">
                 <div class="acc-card cash">
                     <div class="acc-icon">💵</div>
                     <div class="acc-name">Cash account</div>
                     <div class="acc-val">৳4,24,850</div>
                     <div class="acc-change up">▲ +6.2% this month</div>
+                    <div class="acc-dc-row">
+                        <div class="acc-dc-item">
+                            <span class="lbl">Credit (in)</span>
+                            <span class="val" style="color:var(--green)">৳5,12,300</span>
+                        </div>
+                        <div class="acc-dc-item" style="text-align:right">
+                            <span class="lbl">Debit (out)</span>
+                            <span class="val" style="color:var(--red)">৳87,450</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="acc-card bank">
                     <div class="acc-icon">🏦</div>
                     <div class="acc-name">Bank account</div>
                     <div class="acc-val">৳12,80,400</div>
                     <div class="acc-change up">▲ +3.8% this month</div>
+                    <div class="acc-dc-row">
+                        <div class="acc-dc-item">
+                            <span class="lbl">Credit (in)</span>
+                            <span class="val" style="color:var(--green)">৳14,90,000</span>
+                        </div>
+                        <div class="acc-dc-item" style="text-align:right">
+                            <span class="lbl">Debit (out)</span>
+                            <span class="val" style="color:var(--red)">৳2,09,600</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="acc-card mobile">
                     <div class="acc-icon">📱</div>
                     <div class="acc-name">Mobile banking</div>
                     <div class="acc-val">৳1,62,300</div>
                     <div class="acc-change down">▼ −1.1% this month</div>
+                    <div class="acc-dc-row">
+                        <div class="acc-dc-item">
+                            <span class="lbl">Credit (in)</span>
+                            <span class="val" style="color:var(--green)">৳1,78,900</span>
+                        </div>
+                        <div class="acc-dc-item" style="text-align:right">
+                            <span class="lbl">Debit (out)</span>
+                            <span class="val" style="color:var(--red)">৳1,80,500</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- Combined Debit / Credit summary card -->
+            <div class="card" style="margin-bottom:16px">
+                <div class="card-head">
+                    <div>
+                        <div class="card-title">Debit vs Credit — all accounts</div>
+                        <div class="card-sub">Net = Credit − Debit</div>
+                    </div>
+                    <div class="view-tabs">
+                        <div class="view-tab active" onclick="setView(this,'dcSummary','chart')">📊 Chart</div>
+                        <div class="view-tab" onclick="setView(this,'dcSummary','card')">📋 Card</div>
+                    </div>
+                </div>
+                <div class="view-pane active" data-pane="dcSummary-chart">
+                    <div class="chart-wrap" style="height:200px"><canvas id="dcChart" role="img"
+                            aria-label="Debit vs credit by account"></canvas></div>
+                </div>
+                <div class="view-pane" data-pane="dcSummary-card">
+                    <table class="mini-table">
+                        <thead>
+                            <tr><th>Account</th><th>Credit (in)</th><th>Debit (out)</th><th>Net</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Cash</td><td style="color:var(--green)">৳5,12,300</td><td style="color:var(--red)">৳87,450</td><td style="font-weight:700;color:var(--green)">৳4,24,850</td></tr>
+                            <tr><td>Bank</td><td style="color:var(--green)">৳14,90,000</td><td style="color:var(--red)">৳2,09,600</td><td style="font-weight:700;color:var(--green)">৳12,80,400</td></tr>
+                            <tr><td>Mobile banking</td><td style="color:var(--green)">৳1,78,900</td><td style="color:var(--red)">৳1,80,500</td><td style="font-weight:700;color:var(--red)">−৳1,600</td></tr>
+                            <tr style="border-top:2px solid var(--border)">
+                                <td style="font-weight:700">Total</td>
+                                <td style="font-weight:700;color:var(--green)">৳21,81,200</td>
+                                <td style="font-weight:700;color:var(--red)">৳4,77,550</td>
+                                <td style="font-weight:700;color:var(--green)">৳17,03,650</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="grid-7-5">
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Monthly financial performance</div>
-                        <div class="card-tag">Multi-line</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'finChart','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'finChart','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:220px"><canvas id="finChart" role="img"
-                            aria-label="Monthly financial performance"></canvas></div>
+                    <div class="view-pane active" data-pane="finChart-chart">
+                        <div class="chart-wrap" style="height:220px"><canvas id="finChart" role="img"
+                                aria-label="Monthly financial performance"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="finChart-card">
+                        <table class="mini-table">
+                            <thead><tr><th>Month</th><th>Fees (৳L)</th><th>Salary (৳L)</th><th>Expenses (৳L)</th></tr></thead>
+                            <tbody>
+                                <tr><td>Jan</td><td>14</td><td>6.8</td><td>2.8</td></tr>
+                                <tr><td>Feb</td><td>16</td><td>6.8</td><td>3.1</td></tr>
+                                <tr><td>Mar</td><td>18</td><td>7.2</td><td>3.0</td></tr>
+                                <tr><td>Apr</td><td>15</td><td>7.2</td><td>3.4</td></tr>
+                                <tr><td>May</td><td>17</td><td>7.6</td><td>3.2</td></tr>
+                                <tr><td>Jun</td><td>18.4</td><td>8.2</td><td>3.6</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Distribution by category</div>
-                        <div class="card-tag">Donut</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'finDonut','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'finDonut','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:220px"><canvas id="finDonut" role="img"
-                            aria-label="Financial category distribution"></canvas></div>
-                    <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
-                        <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
-                                style="width:10px;height:10px;border-radius:2px;background:var(--green)"></span>Fees
-                            61%</span>
-                        <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
-                                style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></span>Salary
-                            27%</span>
-                        <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
-                                style="width:10px;height:10px;border-radius:2px;background:var(--red)"></span>Expenses
-                            12%</span>
+                    <div class="view-pane active" data-pane="finDonut-chart">
+                        <div class="chart-wrap" style="height:220px"><canvas id="finDonut" role="img"
+                                aria-label="Financial category distribution"></canvas></div>
+                        <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
+                            <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
+                                    style="width:10px;height:10px;border-radius:2px;background:var(--green)"></span>Fees
+                                61%</span>
+                            <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
+                                    style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></span>Salary
+                                27%</span>
+                            <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span
+                                    style="width:10px;height:10px;border-radius:2px;background:var(--red)"></span>Expenses
+                                12%</span>
+                        </div>
+                    </div>
+                    <div class="view-pane" data-pane="finDonut-card">
+                        <table class="mini-table">
+                            <thead><tr><th>Category</th><th>Share</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="dot" style="background:var(--green)"></span>Fee invoices</td><td>61%</td></tr>
+                                <tr><td><span class="dot" style="background:var(--blue)"></span>Salary</td><td>27%</td></tr>
+                                <tr><td><span class="dot" style="background:var(--red)"></span>Expenses</td><td>12%</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1982,7 +2233,8 @@
                                 <th>Date</th>
                                 <th>User</th>
                                 <th>Type</th>
-                                <th>Amount</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -1993,6 +2245,7 @@
                                 <td>Jun 25, 2025</td>
                                 <td>Fatima Khanam</td>
                                 <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td>—</td>
                                 <td style="font-weight:600;color:var(--green)">৳4,800</td>
                                 <td><span class="tx-status status-done">Completed</span></td>
                                 <td><button class="tx-btn">View</button></td>
@@ -2002,6 +2255,7 @@
                                 <td>Jun 25, 2025</td>
                                 <td>Rahman Mia</td>
                                 <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td>—</td>
                                 <td style="font-weight:600;color:var(--green)">৳6,200</td>
                                 <td><span class="tx-status status-done">Completed</span></td>
                                 <td><button class="tx-btn">View</button></td>
@@ -2011,7 +2265,8 @@
                                 <td>Jun 25, 2025</td>
                                 <td>Office</td>
                                 <td><span class="tx-type tx-exp">Expense</span></td>
-                                <td style="font-weight:600;color:var(--red)">−৳1,400</td>
+                                <td style="font-weight:600;color:var(--red)">৳1,400</td>
+                                <td>—</td>
                                 <td><span class="tx-status status-done">Completed</span></td>
                                 <td><button class="tx-btn">View</button></td>
                             </tr>
@@ -2020,6 +2275,7 @@
                                 <td>Jun 24, 2025</td>
                                 <td>Sumaiya Begum</td>
                                 <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td>—</td>
                                 <td style="font-weight:600;color:var(--green)">৳3,600</td>
                                 <td><span class="tx-status status-done">Completed</span></td>
                                 <td><button class="tx-btn">View</button></td>
@@ -2029,7 +2285,8 @@
                                 <td>Jun 24, 2025</td>
                                 <td>Accounts</td>
                                 <td><span class="tx-type tx-sal">Salary</span></td>
-                                <td style="font-weight:600;color:var(--blue)">৳28,000</td>
+                                <td style="font-weight:600;color:var(--red)">৳28,000</td>
+                                <td>—</td>
                                 <td><span class="tx-status status-pend">Pending</span></td>
                                 <td><button class="tx-btn">View</button></td>
                             </tr>
@@ -2038,9 +2295,16 @@
                                 <td>Jun 23, 2025</td>
                                 <td>Karim Uddin</td>
                                 <td><span class="tx-type tx-fee">Fee</span></td>
+                                <td>—</td>
                                 <td style="font-weight:600;color:var(--green)">৳5,100</td>
                                 <td><span class="tx-status status-done">Completed</span></td>
                                 <td><button class="tx-btn">View</button></td>
+                            </tr>
+                            <tr style="border-top:2px solid var(--border)">
+                                <td colspan="4" style="font-weight:700">Page total</td>
+                                <td style="font-weight:700;color:var(--red)">৳29,400</td>
+                                <td style="font-weight:700;color:var(--green)">৳19,700</td>
+                                <td colspan="2"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -2156,10 +2420,29 @@
                         <div>
                             <div class="card-title">Class-wise average GPA</div>
                         </div>
-                        <div class="card-tag">Bar</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'gpaChart','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'gpaChart','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:190px"><canvas id="gpaChart" role="img"
-                            aria-label="Class-wise average GPA"></canvas></div>
+                    <div class="view-pane active" data-pane="gpaChart-chart">
+                        <div class="chart-wrap" style="height:190px"><canvas id="gpaChart" role="img"
+                                aria-label="Class-wise average GPA"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="gpaChart-card">
+                        <table class="mini-table">
+                            <thead><tr><th>Class</th><th>Avg GPA</th></tr></thead>
+                            <tbody>
+                                <tr><td>Class 6</td><td>4.10</td></tr>
+                                <tr><td>Class 7</td><td>3.92</td></tr>
+                                <tr><td>Class 8</td><td style="color:var(--green);font-weight:700">4.22</td></tr>
+                                <tr><td>Class 9</td><td>4.05</td></tr>
+                                <tr><td>Class 10</td><td style="color:var(--red);font-weight:700">3.88</td></tr>
+                                <tr><td>Class 11</td><td>4.18</td></tr>
+                                <tr><td>Class 12</td><td>3.95</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -2206,6 +2489,10 @@
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Grade distribution — Class 8</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'gradeDonut','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'gradeDonut','card')">📋 Card</div>
+                        </div>
                     </div>
                     <div class="grade-row"><span class="grade-label" style="color:var(--green)">A+</span>
                         <div class="grade-bar">
@@ -2246,8 +2533,24 @@
                     <div style="margin-top:14px">
                         <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px">Overall school
                             distribution</div>
-                        <div class="chart-wrap" style="height:100px"><canvas id="gradeDonut" role="img"
-                                aria-label="Overall grade distribution">A+18% A26% A-22% B17% C10% D5% F2%</canvas>
+                        <div class="view-pane active" data-pane="gradeDonut-chart">
+                            <div class="chart-wrap" style="height:100px"><canvas id="gradeDonut" role="img"
+                                    aria-label="Overall grade distribution">A+18% A26% A-22% B17% C10% D5% F2%</canvas>
+                            </div>
+                        </div>
+                        <div class="view-pane" data-pane="gradeDonut-card">
+                            <table class="mini-table">
+                                <thead><tr><th>Grade</th><th>Share</th></tr></thead>
+                                <tbody>
+                                    <tr><td><span class="dot" style="background:var(--green)"></span>A+</td><td>18%</td></tr>
+                                    <tr><td><span class="dot" style="background:var(--teal)"></span>A</td><td>26%</td></tr>
+                                    <tr><td><span class="dot" style="background:var(--blue)"></span>A−</td><td>22%</td></tr>
+                                    <tr><td><span class="dot" style="background:var(--accent)"></span>B</td><td>17%</td></tr>
+                                    <tr><td><span class="dot" style="background:var(--amber)"></span>C</td><td>10%</td></tr>
+                                    <tr><td><span class="dot" style="background:var(--red)"></span>D</td><td>5%</td></tr>
+                                    <tr><td><span class="dot" style="background:#991b1b"></span>F</td><td>2%</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -2258,10 +2561,27 @@
                 <div class="card">
                     <div class="card-head">
                         <div class="card-title">Current vs previous exam</div>
-                        <div class="card-tag">Comparison</div>
+                        <div class="view-tabs">
+                            <div class="view-tab active" onclick="setView(this,'examCompare','chart')">📊 Chart</div>
+                            <div class="view-tab" onclick="setView(this,'examCompare','card')">📋 Card</div>
+                        </div>
                     </div>
-                    <div class="chart-wrap" style="height:180px"><canvas id="examCompare" role="img"
-                            aria-label="Current vs previous exam comparison"></canvas></div>
+                    <div class="view-pane active" data-pane="examCompare-chart">
+                        <div class="chart-wrap" style="height:180px"><canvas id="examCompare" role="img"
+                                aria-label="Current vs previous exam comparison"></canvas></div>
+                    </div>
+                    <div class="view-pane" data-pane="examCompare-card">
+                        <table class="mini-table">
+                            <thead><tr><th>Class</th><th>Current</th><th>Previous</th><th>Δ</th></tr></thead>
+                            <tbody>
+                                <tr><td>Class 6</td><td>81%</td><td>77%</td><td style="color:var(--green)">+4%</td></tr>
+                                <tr><td>Class 7</td><td>79%</td><td>76%</td><td style="color:var(--green)">+3%</td></tr>
+                                <tr><td>Class 8</td><td>82%</td><td>76%</td><td style="color:var(--green)">+6%</td></tr>
+                                <tr><td>Class 9</td><td>80%</td><td>78%</td><td style="color:var(--green)">+2%</td></tr>
+                                <tr><td>Class 10</td><td>77%</td><td>74%</td><td style="color:var(--green)">+3%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-head">
@@ -2536,7 +2856,7 @@
                 </div>
             </div>
 
-            
+
             <div style="height:40px"></div>
         </div><!-- /content -->
     </main>
@@ -2555,6 +2875,18 @@
         function switchTab(el, tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
+        }
+
+        /* ── Card / Chart view toggle ── */
+        function setView(btn, group, view) {
+            const tabsWrap = btn.parentElement;
+            tabsWrap.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            // panes live in nearest ancestor card (or document for split panes like gradeDonut)
+            const card = btn.closest('.card') || document;
+            card.querySelectorAll(`[data-pane^="${group}-"]`).forEach(p => p.classList.remove('active'));
+            const target = card.querySelector(`[data-pane="${group}-${view}"]`);
+            if (target) target.classList.add('active');
         }
 
         /* ── sparklines ── */
@@ -2583,7 +2915,7 @@
             destroyAll();
             const grid = { color: tv('rgba(0,0,0,0.05)', 'rgba(255,255,255,0.05)') };
             const tickStyle = { color: tv('#9499b0', '#5a607a'), font: { size: 11 } };
-            const bg1 = tv('#f0f2f8', '#1e2029');
+            const borderC = tv('#ffffff', '#16181f');
 
             /* Sparklines */
             const spColors = ['#4f46e5', '#10b981', '#f59e0b', '#3b82f6', '#14b8a6', '#ec4899', '#8b5cf6', '#ef4444'];
@@ -2613,20 +2945,29 @@
                 }
             });
 
-            /* Admission trend */
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            charts.admission = new Chart(document.getElementById('admissionTrend'), {
-                type: 'line',
+            /* Student gender distribution */
+            charts.studGender = new Chart(document.getElementById('studentGenderChart'), {
+                type: 'doughnut',
                 data: {
-                    labels: months, datasets: [
-                        { label: 'New admissions', data: [22, 18, 30, 25, 28, 35, 40, 38, 20, 15, 12, 10], borderColor: '#4f46e5', tension: .4, pointRadius: 3, borderWidth: 2.5, fill: true, backgroundColor: 'rgba(79,70,229,.08)' },
-                        { label: 'Dropouts', data: [2, 3, 1, 4, 2, 1, 3, 2, 1, 2, 1, 0], borderColor: '#ef4444', tension: .4, pointRadius: 3, borderWidth: 2, fill: false, borderDash: [4, 3] }
-                    ]
+                    labels: ['Male', 'Female'],
+                    datasets: [{ data: [652, 588], backgroundColor: ['#3b82f6', '#ec4899'], borderWidth: 2, borderColor: borderC }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { grid, ticks: tickStyle }, y: { grid, ticks: tickStyle } }
+                    responsive: true, maintainAspectRatio: false, cutout: '65%',
+                    plugins: { legend: { position: 'bottom', labels: { color: tickStyle.color, font: { size: 11 }, padding: 14 } }, tooltip: { callbacks: { label: v => v.label + ': ' + v.raw + ' students' } } }
+                }
+            });
+
+            /* Staff gender distribution */
+            charts.staffGender = new Chart(document.getElementById('staffGenderChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Male', 'Female'],
+                    datasets: [{ data: [61, 49], backgroundColor: ['#3b82f6', '#ec4899'], borderWidth: 2, borderColor: borderC }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: { legend: { position: 'bottom', labels: { color: tickStyle.color, font: { size: 11 }, padding: 10 } }, tooltip: { callbacks: { label: v => v.label + ': ' + v.raw } } }
                 }
             });
 
@@ -2643,6 +2984,24 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle } }
+                }
+            });
+
+            /* Staff by designation : NEW */
+            charts.staffDesig = new Chart(document.getElementById('staffDesigChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Principal/VP', 'Sr. Teacher', 'Asst. Teacher', 'Lab Asst.', 'Librarian', 'Accountant', 'Admin/Office', 'Support'],
+                    datasets: [{
+                        label: 'Count', data: [2, 24, 32, 8, 2, 3, 14, 25],
+                        backgroundColor: ['#8b5cf6', '#4f46e5', '#3b82f6', '#14b8a6', '#10b981', '#f59e0b', '#ec4899', '#9ca3af'],
+                        borderRadius: 4, barThickness: 14
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => v.raw + ' staff' } } },
+                    scales: { x: { grid, ticks: tickStyle }, y: { grid: { display: false }, ticks: { ...tickStyle, font: { size: 10 } } } }
                 }
             });
 
@@ -2697,7 +3056,25 @@
                 }
             });
 
+            /* Debit vs Credit by account : NEW */
+            charts.dc = new Chart(document.getElementById('dcChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Cash', 'Bank', 'Mobile banking'],
+                    datasets: [
+                        { label: 'Credit (in)', data: [5.123, 14.90, 1.789], backgroundColor: '#10b981', borderRadius: 4, barThickness: 26 },
+                        { label: 'Debit (out)', data: [0.8745, 2.096, 1.805], backgroundColor: '#ef4444', borderRadius: 4, barThickness: 26 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'top', labels: { color: tickStyle.color, font: { size: 11 } } }, tooltip: { callbacks: { label: v => v.dataset.label + ': ৳' + v.raw + 'L' } } },
+                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: { ...tickStyle, callback: v => '৳' + v + 'L' } } }
+                }
+            });
+
             /* Finance chart */
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             charts.fin = new Chart(document.getElementById('finChart'), {
                 type: 'line',
                 data: {
@@ -2719,7 +3096,7 @@
                 type: 'doughnut',
                 data: {
                     labels: ['Fee invoices', 'Salary', 'Expenses'],
-                    datasets: [{ data: [61, 27, 12], backgroundColor: ['#10b981', '#3b82f6', '#ef4444'], borderWidth: 2, borderColor: tv('#ffffff', '#16181f') }]
+                    datasets: [{ data: [61, 27, 12], backgroundColor: ['#10b981', '#3b82f6', '#ef4444'], borderWidth: 2, borderColor: borderC }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false, cutout: '65%',
@@ -2752,7 +3129,7 @@
                     datasets: [{
                         data: [18, 26, 22, 17, 10, 5, 2],
                         backgroundColor: ['#10b981', '#14b8a6', '#3b82f6', '#4f46e5', '#f59e0b', '#ef4444', '#991b1b'],
-                        borderWidth: 1, borderColor: tv('#ffffff', '#16181f')
+                        borderWidth: 1, borderColor: borderC
                     }]
                 },
                 options: {
@@ -2774,22 +3151,6 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false }, tooltip: { callbacks: { label: v => v.dataset.label + ': ' + v.raw + '%' } } },
                     scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle, min: 65 } }
-                }
-            });
-
-            /* Library chart */
-            charts.lib = new Chart(document.getElementById('libChart'), {
-                type: 'line',
-                data: {
-                    labels: days30.slice(-14), datasets: [
-                        { label: 'Issues', data: [22, 18, 24, 20, 26, 30, 28, 32, 29, 31, 27, 33, 30, 28], borderColor: '#3b82f6', tension: .4, borderWidth: 2.5, pointRadius: 3, fill: true, backgroundColor: 'rgba(59,130,246,.07)' },
-                        { label: 'Returns', data: [18, 20, 19, 22, 23, 24, 25, 26, 22, 28, 24, 30, 27, 25], borderColor: '#10b981', tension: .4, borderWidth: 2, pointRadius: 3 }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { grid: { display: false }, ticks: tickStyle }, y: { grid, ticks: tickStyle } }
                 }
             });
         }
